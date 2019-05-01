@@ -86,9 +86,9 @@ class Register extends Component {
 		errors.map((error, i) => <p key={i}>{error.message}</p>);
 
 	handleInputError = (errors, inputName) => {
-		return errors.some(error =>
-			error.message.toLowerCase().includes(inputName) ? 'error' : ''
-		);
+		return errors.some(error => error.message.toLowerCase().includes(inputName))
+			? 'error'
+			: '';
 	};
 
 	render() {
