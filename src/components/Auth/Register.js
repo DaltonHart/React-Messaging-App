@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase';
+import md5 from 'md5';
 
 import {
 	Grid,
@@ -20,7 +21,8 @@ class Register extends Component {
 		password: '',
 		passwordConfirmation: '',
 		errors: [],
-		loading: false
+		loading: false,
+		usersRef: firebase.database().ref('users')
 	};
 	handleChange = e => {
 		this.setState({ [e.target.name]: e.target.value });
@@ -30,7 +32,7 @@ class Register extends Component {
 		let errors = [];
 		let error;
 		if (this.isFormEmpty(this.state)) {
-			error = { message: 'Fill in all fields' };
+			error = { message: 'All Fields must be filled in' };
 			this.setState({ errors: errors.concat(error) });
 			return false;
 		} else if (!this.isPasswordValid(this.state)) {
@@ -70,7 +72,26 @@ class Register extends Component {
 				.createUserWithEmailAndPassword(this.state.email, this.state.password)
 				.then(createdUser => {
 					console.log(createdUser);
-					this.setState({ loading: false });
+					createdUser.user
+						.updateProfile({
+							displayName: this.state.username,
+							photoURL: `http://gravatar.com/avatar/${md5(
+								createdUser.user.email
+							)}?d=identicon`
+						})
+						.then(() => {
+							this.saveUser(createdUser).then(() => {
+								console.log('user saved');
+								this.setState({ loading: false });
+							});
+						})
+						.catch(err => {
+							console.log(err);
+							this.setState({
+								errors: this.state.errors.concat(err),
+								loading: false
+							});
+						});
 				})
 				.catch(err => {
 					console.log(err);
@@ -80,6 +101,13 @@ class Register extends Component {
 					});
 				});
 		}
+	};
+
+	saveUser = createdUser => {
+		return this.state.usersRef.child(createdUser.user.uid).set({
+			name: createdUser.user.displayName,
+			avatar: createdUser.user.photoURL
+		});
 	};
 
 	displayErrors = errors =>
