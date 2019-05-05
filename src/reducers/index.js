@@ -24,7 +24,7 @@ const user_reducer = (state = initialUserState, action) => {
 };
 
 const initialChannelState = {
-	currentUser: null
+	currentChannel: null
 };
 
 const channel_reducer = (state = initialChannelState, action) => {
