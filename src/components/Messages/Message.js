@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Comment, CommentContent } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 
 const isOwnMessage = (message, user) => {
 	return message.user.id === user.uid ? 'message__self' : '';
