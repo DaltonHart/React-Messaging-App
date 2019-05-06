@@ -30,3 +30,7 @@ body,
 	border-left: 2px solid orange !important;
 	padding-left: 8px !important;
 }
+
+.message__image {
+	padding: 1em;
+}
