@@ -7,6 +7,8 @@ import Message from './Message';
 
 class Messages extends Component {
 	state = {
+		privateChannel: this.props.isPrivateChannel,
+		privateMessagesRef: firebase.database().ref('privateMessages'),
 		messagesRef: firebase.database().ref('messages'),
 		channel: this.props.currentChannel,
 		user: this.props.currentUser,
@@ -78,7 +80,8 @@ class Messages extends Component {
 		}
 	};
 
-	displayChannelName = channel => (channel ? `#${channel.name}` : '');
+	displayChannelName = channel =>
+		channel ? `${this.state.privateChannel ? '@' : '#'}${channel.name}` : '';
 
 	handleSearchChange = e => {
 		this.setState({ searchTerm: e.target.value, searchLoading: true }, () => {
@@ -112,7 +115,8 @@ class Messages extends Component {
 			numUniqueUsers,
 			searchTerm,
 			searchResults,
-			searchLoading
+			searchLoading,
+			privateChannel
 		} = this.state;
 		return (
 			<>
@@ -121,6 +125,7 @@ class Messages extends Component {
 					numUniqueUsers={numUniqueUsers}
 					handleSearchChange={this.handleSearchChange}
 					searchLoading={searchLoading}
+					isPrivateChannel={privateChannel}
 				/>
 
 				<Segment>
@@ -137,6 +142,7 @@ class Messages extends Component {
 					currentChannel={channel}
 					currentUser={user}
 					isProgressBarVisible={this.isProgressBarVisible}
+					isPrivateChannel={privateChannel}
 				/>
 			</>
 		);

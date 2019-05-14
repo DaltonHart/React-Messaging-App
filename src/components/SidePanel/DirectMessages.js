@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { setCurrentChannel } from '../../actions';
+import { setCurrentChannel, setPrivateChannel } from '../../actions';
 
 import firebase from '../../firebase';
 
@@ -70,7 +70,7 @@ class DirectMessages extends Component {
 	isUserOnline = user => user.status === 'online';
 
 	changeChannel = user => {
-		const channelId = this.getChannelId(user.uid);
+		const channelId = this.getChannelId(user.id);
 		const ChannelData = {
 			id: channelId,
 			name: user.name
@@ -80,7 +80,7 @@ class DirectMessages extends Component {
 	};
 
 	getChannelId = userId => {
-		const currentUserId = this.state.user.id;
+		const currentUserId = this.state.user.uid;
 		return userId < currentUserId
 			? `${userId}/${currentUserId}`
 			: `${currentUserId}/${userId}`;
@@ -114,5 +114,5 @@ class DirectMessages extends Component {
 
 export default connect(
 	null,
-	{ setCurrentChannel }
+	{ setCurrentChannel, setPrivateChannel }
 )(DirectMessages);

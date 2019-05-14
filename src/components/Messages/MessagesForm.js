@@ -69,10 +69,18 @@ class MessagesForm extends Component {
 		}
 	};
 
+	getPath = () => {
+		if (this.props.isPrivateChannel) {
+			return `chat/private-${this.state.channel.id}`;
+		} else {
+			return 'chat/public';
+		}
+	};
+
 	uploadFile = (file, metadata) => {
 		const pathToUpload = this.state.channel.id;
 		const ref = this.props.messagesRef;
-		const filePath = `chat/public/${uuidv4()}.jpg`;
+		const filePath = `${this.getPath()}/${uuidv4()}.jpg`;
 
 		this.setState(
 			{
