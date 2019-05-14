@@ -30,12 +30,12 @@ class Messages extends Component {
 
 	addListeners = channelId => {
 		this.addMessageListener(channelId);
-		this.addMessageChangeListener(channelId);
 	};
 
 	addMessageListener = channelId => {
 		let loadedMessages = [];
-		this.state.messagesRef.child(channelId).on('child_added', snap => {
+		const ref = this.getMessagesRef();
+		ref.child(channelId).on('child_added', snap => {
 			loadedMessages.push(snap.val());
 			this.setState({
 				messages: loadedMessages,
@@ -45,11 +45,9 @@ class Messages extends Component {
 		});
 	};
 
-	addMessageChangeListener = channelId => {
-		let loadedMessages = [];
-		this.state.messagesRef.child(channelId).on('child_changed', snap => {
-			this.addMessageListener(channelId);
-		});
+	getMessagesRef = () => {
+		const { messagesRef, privateMessagesRef, privateChannel } = this.state;
+		return privateChannel ? privateMessagesRef : messagesRef;
 	};
 
 	countUniqueUsers = messages => {
@@ -143,6 +141,7 @@ class Messages extends Component {
 					currentUser={user}
 					isProgressBarVisible={this.isProgressBarVisible}
 					isPrivateChannel={privateChannel}
+					getMessagesRef={this.getMessagesRef}
 				/>
 			</>
 		);
