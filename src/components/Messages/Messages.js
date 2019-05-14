@@ -28,6 +28,7 @@ class Messages extends Component {
 
 	addListeners = channelId => {
 		this.addMessageListener(channelId);
+		this.addMessageChangeListener(channelId);
 	};
 
 	addMessageListener = channelId => {
@@ -39,6 +40,13 @@ class Messages extends Component {
 				messagesLoading: false
 			});
 			this.countUniqueUsers(loadedMessages);
+		});
+	};
+
+	addMessageChangeListener = channelId => {
+		let loadedMessages = [];
+		this.state.messagesRef.child(channelId).on('child_changed', snap => {
+			this.addMessageListener(channelId);
 		});
 	};
 
