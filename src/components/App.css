@@ -17,8 +17,9 @@ body,
 .messages {
 	height: 62vh;
 	overflow-y: scroll;
+	width: 100% !important;
+	max-width: 100% !important;
 }
-
 .messages__progress {
 	height: 58vh;
 	overflow: scroll;
