@@ -18,7 +18,7 @@ class ColorPanel extends Component {
 		modal: false,
 		primary: '',
 		secondary: '',
-		usersRef: firebase.database.ref('users'),
+		usersRef: firebase.database().ref('users'),
 		user: this.props.currentUser
 	};
 	openModal = () => this.setState({ modal: true });
@@ -40,6 +40,10 @@ class ColorPanel extends Component {
 			.update({ primary, secondary })
 			.then(() => {
 				console.log('sent');
+				this.closeModal();
+			})
+			.catch(err => {
+				console.log(err);
 			});
 	};
 
