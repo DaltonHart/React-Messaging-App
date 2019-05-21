@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import uuidv4 from 'uuid/v4';
 import firebase from '../../firebase';
-import { Segment, Input, Button } from 'semantic-ui-react';
+import { Segment, Input, Button, Form } from 'semantic-ui-react';
 import FileModal from './FileModal';
 import ProgressBar from './ProgressBar';
 
@@ -152,48 +152,50 @@ class MessagesForm extends Component {
 		} = this.state;
 		return (
 			<Segment className="message__form">
-				<Input
-					fluid
-					name="message"
-					onChange={this.handleChange}
-					value={message}
-					style={{ marginBottom: '0.7em' }}
-					label={<Button icon={'add'} />}
-					labelPosition="left"
-					className={
-						errors.some(error => error.message.includes('message'))
-							? 'error'
-							: ''
-					}
-					placeholder="Write your message"
-				/>
-				<Button.Group icon widths="2">
-					<Button
-						color="orange"
-						content="Add Reply"
-						disabled={loading}
+				<Form onSubmit={this.sendMessage}>
+					<Input
+						fluid
+						name="message"
+						onChange={this.handleChange}
+						value={message}
+						style={{ marginBottom: '0.7em' }}
+						label={<Button icon={'add'} />}
 						labelPosition="left"
-						icon="edit"
-						onClick={this.sendMessage}
+						className={
+							errors.some(error => error.message.includes('message'))
+								? 'error'
+								: ''
+						}
+						placeholder="Write your message"
 					/>
-					<Button
-						color="teal"
-						disabled={uploadState === 'uploading'}
-						onClick={this.openModal}
-						content="Upload Media"
-						labelPosition="right"
-						icon="cloud upload"
+					<Button.Group icon widths="2">
+						<Button
+							color="orange"
+							content="Add Reply"
+							disabled={loading}
+							labelPosition="left"
+							icon="edit"
+							onClick={this.sendMessage}
+						/>
+						<Button
+							color="teal"
+							disabled={uploadState === 'uploading'}
+							onClick={this.openModal}
+							content="Upload Media"
+							labelPosition="right"
+							icon="cloud upload"
+						/>
+					</Button.Group>
+					<FileModal
+						uploadFile={this.uploadFile}
+						modal={modal}
+						closeModal={this.closeModal}
 					/>
-				</Button.Group>
-				<FileModal
-					uploadFile={this.uploadFile}
-					modal={modal}
-					closeModal={this.closeModal}
-				/>
-				<ProgressBar
-					uploadState={uploadState}
-					percentUploaded={percentUploaded}
-				/>
+					<ProgressBar
+						uploadState={uploadState}
+						percentUploaded={percentUploaded}
+					/>
+				</Form>
 			</Segment>
 		);
 	}

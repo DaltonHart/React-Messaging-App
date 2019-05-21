@@ -34,6 +34,14 @@ class Messages extends Component {
 		}
 	}
 
+	componentDidUpdate() {
+		this.scrollToBottom();
+	}
+
+	scrollToBottom = () => {
+		this.messagesEnd.scrollIntoView();
+	};
+
 	addUserStarsListener = (channelId, userId) => {
 		this.state.usersRef
 			.child(userId)
@@ -61,6 +69,7 @@ class Messages extends Component {
 				messages: loadedMessages,
 				messagesLoading: false
 			});
+			this.scrollToBottom();
 			this.countUniqueUsers(loadedMessages);
 			this.countUserPosts(loadedMessages);
 		});
@@ -202,6 +211,11 @@ class Messages extends Component {
 						{searchTerm
 							? this.displayMessages(searchResults)
 							: this.displayMessages(messages)}
+						<div
+							ref={el => {
+								this.messagesEnd = el;
+							}}
+						/>
 					</Comment.Group>
 				</Segment>
 
