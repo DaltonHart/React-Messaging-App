@@ -36,6 +36,12 @@ body,
 	z-index: 200;
 }
 
+/* Emoji Picker */
+
+.emojipicker {
+	position: absolute;
+}
+
 /* Message.js */
 
 .message__self {
