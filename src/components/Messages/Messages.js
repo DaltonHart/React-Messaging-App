@@ -8,6 +8,7 @@ import MessagesHeader from './MessagesHeader';
 import MessageForm from './MessagesForm';
 import Message from './Message';
 import Typing from './Typing';
+import Skeleton from './Skeleton';
 
 class Messages extends Component {
 	state = {
@@ -227,6 +228,15 @@ class Messages extends Component {
 		setTimeout(() => this.setState({ searchLoading: false }), 1000);
 	};
 
+	displayMessageSkeleton = loading =>
+		loading ? (
+			<div>
+				{[...Array(10)].map((_, i) => (
+					<Skeleton key={i} />
+				))}
+			</div>
+		) : null;
+
 	render() {
 		const {
 			messagesRef,
@@ -240,7 +250,8 @@ class Messages extends Component {
 			searchLoading,
 			privateChannel,
 			isChannelStarred,
-			typingUsers
+			typingUsers,
+			messagesLoading
 		} = this.state;
 		return (
 			<>
@@ -257,6 +268,7 @@ class Messages extends Component {
 				<Segment>
 					<Comment.Group
 						className={progressBar ? 'messages__progress' : 'messages'}>
+						{this.displayMessageSkeleton(messagesLoading)}
 						{searchTerm
 							? this.displayMessages(searchResults)
 							: this.displayMessages(messages)}
