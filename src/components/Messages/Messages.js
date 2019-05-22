@@ -108,7 +108,6 @@ class Messages extends Component {
 				messages: loadedMessages,
 				messagesLoading: false
 			});
-			this.scrollToBottom();
 			this.countUniqueUsers(loadedMessages);
 			this.countUserPosts(loadedMessages);
 		});
