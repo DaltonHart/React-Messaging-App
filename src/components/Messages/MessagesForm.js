@@ -29,7 +29,10 @@ class MessagesForm extends Component {
 
 	handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
-	handleKeyDown = () => {
+	handleKeyDown = e => {
+		if (e.keyCode === 13) {
+			this.sendMessage();
+		}
 		const { message, typingRef, channel, user } = this.state;
 		if (message) {
 			typingRef
@@ -62,7 +65,6 @@ class MessagesForm extends Component {
 	};
 
 	sendMessage = e => {
-		e.preventDefault();
 		const { getMessagesRef } = this.props;
 		const { message, channel, typingRef, user } = this.state;
 
