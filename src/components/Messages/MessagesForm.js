@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import uuidv4 from 'uuid/v4';
 import firebase from '../../firebase';
-import { Segment, Input, Button, Form } from 'semantic-ui-react';
+import { Segment, Input, Button } from 'semantic-ui-react';
 import { Picker, emojiIndex } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 
@@ -23,6 +23,13 @@ class MessagesForm extends Component {
 		modal: false,
 		emojiPicker: false
 	};
+
+	componentWillUnmount() {
+		if (this.state.uploadTask !== null) {
+			this.state.uploadTask.cancel();
+			this.setState({ uploadTask: null });
+		}
+	}
 
 	openModal = () => this.setState({ modal: true });
 	closeModal = () => this.setState({ modal: false });
